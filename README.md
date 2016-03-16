@@ -18,9 +18,10 @@ Then add this to your `routes.rb`:
 match '_kea', to: Kea::Router.do_route, as: :kea, via: [:post]
 ```
 
-Finally, in each controller that you import in webpack via `kea-rails-loader`, add this:
+Finally, in each controller that you import in webpack via `kea-rails-loader`, add `include Kea::Controller`:
 
 ```ruby
+# at scenes/search/endpoint.rb
 class Scenes::Search::Endpoint < ApplicationController
   include Kea::Controller
 
