@@ -4,17 +4,26 @@ module Kea
 
     def run_kea_action
       active_method = params['method']
-      @running_via_kea = true
-      self.send(active_method)
+      if self.respond_to? active_method
+        @running_via_kea = true
+        self.send(active_method)
+      else
+        raise Kea::ActionNotFoundError
+      end
     end
-
-  protected
 
     def params
       if @running_via_kea
         request.params['params']
       else
         request.params
+      end
+    end
+
+    def render_props_or_component
+      respond_to do |format|
+        format.html { render 'kea/component' }
+        format.json { render json: @props }
       end
     end
   end

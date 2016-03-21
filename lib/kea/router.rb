@@ -25,7 +25,7 @@ module Kea
     end
 
     def render_error(error)
-      @env['KEA_ERROR'] = error
+      @env['kea.error'] = error
       Kea::ErrorController.action(:render_kea_error).call(@env)
     end
   end

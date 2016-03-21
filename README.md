@@ -21,8 +21,8 @@ match '_kea', to: Kea::Router.do_route, as: :kea, via: [:post]
 Finally, in each controller that you import in webpack via `kea-rails-loader`, add `include Kea::Controller`:
 
 ```ruby
-# at scenes/search/endpoint.rb
-class Scenes::Search::Endpoint < ApplicationController
+# at scenes/search/controller.rb
+class Scenes::Search::Controller < ApplicationController
   include Kea::Controller
 
   def add_favourite
@@ -47,9 +47,9 @@ Something like:
 
 ```js
 // at scenes/search/logic.js
-import endpoint from './endpoint.rb'
+import controller from './controller.rb'
 
-endpoint.addFavoruire({ course_id: this.props.id }).then(response => {
+controller.addFavoruire({ course_id: this.props.id }).then(response => {
   console.log('all favourites:', response.favourites)
 })
 ```
