@@ -55,18 +55,24 @@ In each controller add `include Kea::Controller`:
 class Scenes::Search::Controller < ApplicationController
   include Kea::Controller
 
-  def add_favourite
-    course = Course.find(params[:course_id])
-    Favourite::Create.(user: current_user, anon_user_hash: session[:anon_user_hash], course: course)
+  def index
+    @props = Course::Search.(params).model
 
-    render json: { favourites: collect_favourites! }
+    # rendes kea/component.html.erb if format.html or json: @props if format.json
+    render_props_or_component
+  end
+
+
+  def add_favourite
+    Favourite::Create.(user: current_user, course: Course.find(params[:course_id]))
+
+    render json: { favourites: current_user.favourites.pluck(:id) }
   end
 
   def remove_favourite
-    course = Course.find(params[:course_id])
-    Favourite::Remove.(user: current_user, anon_user_hash: session[:anon_user_hash], course: course)
+    Favourite::Remove.(user: current_user, course: Course.find(params[:course_id]))
 
-    render json: { favourites: collect_favourites! }
+    render json: { favourites: current_user.favourites.pluck(:id) }
   end
 end
 ```
