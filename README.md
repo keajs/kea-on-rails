@@ -132,3 +132,7 @@ The options for `kea_bundle` in routes.rb:
   prerender: true                     # render on the server? defaults to true
 }
 ```
+
+## Current state
+
+This project is still under construction. The code above works, just needs to be cleanly packaged and released as open source.
