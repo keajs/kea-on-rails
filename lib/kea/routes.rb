@@ -9,7 +9,7 @@ module ActionDispatch::Routing
     def kea_bundle(*resources)
       options = resources.extract_options!
       bundle = options[:bundle] || resources[0] || 'common'
-      component = options[:component] || (ActiveSupport::Inflector.classify(bundle) + 'App')
+      component = options[:component] || 'AppContainer'
       prerender = options[:prerender].nil? ? true : options[:prerender]
 
       constraint = lambda do |request|
