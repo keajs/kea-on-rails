@@ -9,7 +9,9 @@ module Kea
 
     def call(env)
       @env = env
-      params = (@env['action_dispatch.request.request_parameters'] || @env['rack.request.form_hash'] || Rack::Utils.parse_nested_query(@env['QUERY_STRING'])).deep_symbolize_keys
+
+      request = Rack::Request.new(env)
+      params = JSON.parse(request.body.string).deep_symbolize_keys
 
       begin
         @endpoint = params[:endpoint].classify.constantize
