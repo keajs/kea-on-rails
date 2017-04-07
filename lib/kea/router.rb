@@ -11,7 +11,10 @@ module Kea
       @env = env
 
       request = Rack::Request.new(env)
-      params = JSON.parse(request.body.string).deep_symbolize_keys
+      body = request.body.read
+      params = JSON.parse(body).deep_symbolize_keys
+
+      request.body.rewind
 
       begin
         @endpoint = params[:endpoint].classify.constantize
