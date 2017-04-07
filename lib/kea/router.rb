@@ -12,9 +12,25 @@ module Kea
 
       request = Rack::Request.new(env)
       body = request.body.read
-      params = JSON.parse(body).deep_symbolize_keys
 
-      request.body.rewind
+      params = nil
+
+      if body.present?
+        params = JSON.parse(body).with_indifferent_access
+        request.body.rewind
+      else
+        # googlebot seems to have given us data in this format
+        if env['rack.request.form_vars'].present?
+          json_params = JSON.parse(env['rack.request.form_vars']) rescue nil
+          params = json_params.with_indifferent_access if json_params.present?
+
+          if params.blank? && env['rack.request.form_hash'].present?
+            params = env['rack.request.form_hash'].with_indifferent_access
+          end
+        end
+      end
+
+      @env['kea.params'] = params.with_indifferent_access
 
       begin
         @endpoint = params[:endpoint].classify.constantize
