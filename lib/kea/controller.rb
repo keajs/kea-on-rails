@@ -14,14 +14,14 @@ module Kea
 
     def params
       if @running_via_kea
-        if env['kea.params'].present?
-          env['kea.params']['params']
+        if request.env['kea.params'].present?
+          request.env['kea.params']['params']
         else
           request.params['params']
         end
       else
-        if env['kea.params'].present?
-          env['kea.params']
+        if request.env['kea.params'].present?
+          request.env['kea.params']
         else
           request.params
         end
